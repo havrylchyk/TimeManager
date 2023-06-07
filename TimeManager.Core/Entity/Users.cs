@@ -8,7 +8,7 @@
         
         public string Email { get; set; }
  
-        public virtual ICollection<Tasks> Tasks { get; set; }
+        public virtual ICollection<SportTasks> Tasks { get; set; }
 
         public virtual ICollection<RegularTask> RegularTasks { get; set; }
     }
