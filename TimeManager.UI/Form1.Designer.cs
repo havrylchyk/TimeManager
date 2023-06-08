@@ -36,7 +36,7 @@
             label3 = new Label();
             label1 = new Label();
             Applaybutton = new Button();
-            Crearbutton = new Button();
+            Loginbutton = new Button();
             SuspendLayout();
             // 
             // EmailtextBox
@@ -49,7 +49,7 @@
             // 
             // PasswordtextBox
             // 
-            PasswordtextBox.Location = new Point(94, 322);
+            PasswordtextBox.Location = new Point(94, 312);
             PasswordtextBox.Multiline = true;
             PasswordtextBox.Name = "PasswordtextBox";
             PasswordtextBox.Size = new Size(386, 35);
@@ -85,7 +85,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(94, 299);
+            label3.Location = new Point(94, 289);
             label3.Name = "label3";
             label3.Size = new Size(110, 20);
             label3.TabIndex = 5;
@@ -103,22 +103,24 @@
             // 
             // Applaybutton
             // 
-            Applaybutton.Location = new Point(94, 377);
+            Applaybutton.BackColor = Color.Thistle;
+            Applaybutton.Location = new Point(127, 377);
             Applaybutton.Name = "Applaybutton";
             Applaybutton.Size = new Size(110, 37);
             Applaybutton.TabIndex = 7;
-            Applaybutton.Text = "Applay";
-            Applaybutton.UseVisualStyleBackColor = true;
+            Applaybutton.Text = "Sing up";
+            Applaybutton.UseVisualStyleBackColor = false;
             Applaybutton.Click += Applaybutton_Click;
             // 
-            // Crearbutton
+            // Loginbutton
             // 
-            Crearbutton.Location = new Point(369, 377);
-            Crearbutton.Name = "Crearbutton";
-            Crearbutton.Size = new Size(111, 37);
-            Crearbutton.TabIndex = 8;
-            Crearbutton.Text = "Clear";
-            Crearbutton.UseVisualStyleBackColor = true;
+            Loginbutton.BackColor = Color.Thistle;
+            Loginbutton.Location = new Point(307, 377);
+            Loginbutton.Name = "Loginbutton";
+            Loginbutton.Size = new Size(117, 37);
+            Loginbutton.TabIndex = 9;
+            Loginbutton.Text = "Log in";
+            Loginbutton.UseVisualStyleBackColor = false;
             // 
             // LoginForm
             // 
@@ -126,7 +128,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.GhostWhite;
             ClientSize = new Size(567, 440);
-            Controls.Add(Crearbutton);
+            Controls.Add(Loginbutton);
             Controls.Add(Applaybutton);
             Controls.Add(label1);
             Controls.Add(label3);
@@ -151,6 +153,6 @@
         private Label label3;
         private Label label1;
         private Button Applaybutton;
-        private Button Crearbutton;
+        private Button Loginbutton;
     }
 }
