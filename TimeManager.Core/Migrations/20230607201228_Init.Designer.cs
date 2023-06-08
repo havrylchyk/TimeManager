@@ -12,7 +12,7 @@ using TimeManager.Core.Context;
 namespace TimeManager.Core.Migrations
 {
     [DbContext(typeof(TimeManagerContext))]
-    [Migration("20230607194311_Init")]
+    [Migration("20230607201228_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -27,64 +27,6 @@ namespace TimeManager.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("TimeManager.Core.Entity.HouseholdTasks", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EstimatedTime")
-                        .HasColumnType("int");
-
-                    b.Property<string>("HouseholdTaskName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("HouseholdTasks");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.LeisureTasks", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EstimatedTime")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LeisureTaskName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("LeisureTasks");
-                });
 
             modelBuilder.Entity("TimeManager.Core.Entity.RegularTask", b =>
                 {
@@ -135,7 +77,22 @@ namespace TimeManager.Core.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("TimeManager.Core.Entity.SportTasks", b =>
+            modelBuilder.Entity("TimeManager.Core.Entity.TaskCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskCategory");
+                });
+
+            modelBuilder.Entity("TimeManager.Core.Entity.Tasks", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,12 +104,18 @@ namespace TimeManager.Core.Migrations
                     b.Property<Guid?>("ReportId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SportTaskName")
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TaskCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TaskName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid>("TaskStatusId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -161,38 +124,28 @@ namespace TimeManager.Core.Migrations
 
                     b.HasIndex("ReportId");
 
+                    b.HasIndex("TaskCategoryId");
+
+                    b.HasIndex("TaskStatusId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("TimeManager.Core.Entity.StudyTasks", b =>
+            modelBuilder.Entity("TimeManager.Core.Entity.TasksStatus", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EstimatedTime")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StudyTaskName")
+                    b.Property<string>("StasusName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("StudyTasks");
+                    b.ToTable("TaskStatus");
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.Users", b =>
@@ -223,57 +176,6 @@ namespace TimeManager.Core.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TimeManager.Core.Entity.WorkTasks", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EstimatedTime")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("WorkTaskName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("WorkTasks");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.HouseholdTasks", b =>
-                {
-                    b.HasOne("TimeManager.Core.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.LeisureTasks", b =>
-                {
-                    b.HasOne("TimeManager.Core.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TimeManager.Core.Entity.RegularTask", b =>
                 {
                     b.HasOne("TimeManager.Core.Entity.Users", "User")
@@ -285,11 +187,23 @@ namespace TimeManager.Core.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TimeManager.Core.Entity.SportTasks", b =>
+            modelBuilder.Entity("TimeManager.Core.Entity.Tasks", b =>
                 {
                     b.HasOne("TimeManager.Core.Entity.Report", null)
                         .WithMany("Task")
                         .HasForeignKey("ReportId");
+
+                    b.HasOne("TimeManager.Core.Entity.TaskCategory", "TaskCategory")
+                        .WithMany()
+                        .HasForeignKey("TaskCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimeManager.Core.Entity.TasksStatus", "TaskStatus")
+                        .WithMany()
+                        .HasForeignKey("TaskStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TimeManager.Core.Entity.Users", "User")
                         .WithMany("Tasks")
@@ -297,16 +211,9 @@ namespace TimeManager.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
-                });
+                    b.Navigation("TaskCategory");
 
-            modelBuilder.Entity("TimeManager.Core.Entity.StudyTasks", b =>
-                {
-                    b.HasOne("TimeManager.Core.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("TaskStatus");
 
                     b.Navigation("User");
                 });
@@ -316,17 +223,6 @@ namespace TimeManager.Core.Migrations
                     b.HasOne("TimeManager.Core.Entity.Report", null)
                         .WithMany("User")
                         .HasForeignKey("ReportId");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.WorkTasks", b =>
-                {
-                    b.HasOne("TimeManager.Core.Entity.Users", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.Report", b =>
