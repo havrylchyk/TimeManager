@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TimeManager.Core.Context;
@@ -47,5 +48,16 @@ namespace TimeManager.Repositories
             ctx.Set<TEntity>().Update(entity);
             Save();
         }
+
+        public Guid GetIdByName(string name)
+        {
+            var entityParameter = Expression.Parameter(typeof(TEntity), "entity");
+            var nameProperty = Expression.Property(entityParameter, "Name");
+            var nameEquals = Expression.Equal(nameProperty, Expression.Constant(name));
+            var lambda = Expression.Lambda<Func<TEntity, bool>>(nameEquals, entityParameter);
+            var entity = ctx.Set<TEntity>().FirstOrDefault(lambda);
+            return entity != null ? entity.Id : default(Guid);
+        }
+
     }
 }

@@ -2,20 +2,21 @@ using System.Text.RegularExpressions;
 using TimeManager.Core.Context;
 using TimeManager.Core.Entity;
 using TimeManager.Repositories;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TimeManager.UI
 {
     public partial class LoginForm : Form
     {
-
+        public static LoginForm Instance;
         private Repository<Users, Guid> usersrepository;
 
         public LoginForm()
         {
             usersrepository = new Repository<Users, Guid>(new TimeManagerContext());
             InitializeComponent();
+            Instance = this;
+            PasswordtextBox.PasswordChar = '•';
+            PasswordtextBox.UseSystemPasswordChar = true;
         }
 
         private void AddUser(Users users)
@@ -48,11 +49,19 @@ namespace TimeManager.UI
                 Password = password,
             };
 
-            AddUser(newUser);
+            if (IsUserExists(username, password))
+            {
+                MessageBox.Show("Користувач вже існує.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                AddUser(newUser);
+            }
 
-            //TimeManagerForm timeManagerForm = new TimeManagerForm(newUser);
-            //timeManagerForm.Show();
-            //this.Hide();
+            TimeManagerForm timeManagerForm = new TimeManagerForm(newUser);
+            timeManagerForm.Show();
+            this.Hide();
         }
 
         private bool IsValidEmail(string email)
@@ -80,6 +89,37 @@ namespace TimeManager.UI
             }
 
             return false;
+        }
+
+        private bool IsUserExists(string username, string password)
+        {
+            return usersrepository.GetAll().Any(u => u.Username == username && u.Password == password);
+        }
+
+        private void Loginbutton_Click(object sender, EventArgs e)
+        {
+            string username = UsernametextBox.Text;
+            string password = PasswordtextBox.Text;
+
+            var user = usersrepository.GetAll().FirstOrDefault(u => u.Username == username && u.Password == password);
+
+            if (user == null)
+            {
+                MessageBox.Show("Користувача з такими даними не знайдено.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            else
+            {
+                TimeManagerForm timeManagerForm = new TimeManagerForm(user);
+                timeManagerForm.Show();
+                this.Hide();
+            }
+
+        }
+
+        private void PasswordtextBox_TextChanged(object sender, EventArgs e)
+        {
+            PasswordtextBox.UseSystemPasswordChar = true;
         }
     }
 }

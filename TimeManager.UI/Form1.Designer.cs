@@ -55,6 +55,7 @@
             PasswordtextBox.Size = new Size(386, 35);
             PasswordtextBox.TabIndex = 1;
             PasswordtextBox.UseSystemPasswordChar = true;
+            PasswordtextBox.TextChanged += PasswordtextBox_TextChanged;
             // 
             // UsernametextBox
             // 
@@ -121,6 +122,7 @@
             Loginbutton.TabIndex = 9;
             Loginbutton.Text = "Log in";
             Loginbutton.UseVisualStyleBackColor = false;
+            Loginbutton.Click += Loginbutton_Click;
             // 
             // LoginForm
             // 
