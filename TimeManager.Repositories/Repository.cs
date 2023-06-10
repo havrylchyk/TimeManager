@@ -47,17 +47,7 @@ namespace TimeManager.Repositories
         {
             ctx.Set<TEntity>().Update(entity);
             Save();
-        }
-
-        public Guid GetIdByName(string name)
-        {
-            var entityParameter = Expression.Parameter(typeof(TEntity), "entity");
-            var nameProperty = Expression.Property(entityParameter, "Name");
-            var nameEquals = Expression.Equal(nameProperty, Expression.Constant(name));
-            var lambda = Expression.Lambda<Func<TEntity, bool>>(nameEquals, entityParameter);
-            var entity = ctx.Set<TEntity>().FirstOrDefault(lambda);
-            return entity != null ? entity.Id : default(Guid);
-        }
+        }       
 
     }
 }

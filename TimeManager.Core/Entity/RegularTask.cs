@@ -8,6 +8,9 @@
         
         public DateTime LastExecuted { get; set; } // Останнє виконання
 
+        public Guid TaskCategoryId { get; set; }
+        public virtual TaskCategory? TaskCategory { get; set; }
+
         public Guid UserId { get; set; }
         public virtual Users User { get; set; }
     }

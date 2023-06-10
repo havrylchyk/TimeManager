@@ -9,5 +9,6 @@ namespace TimeManager.Core.Entity
     public class TasksStatus : BaseEntity
     {
         public string StasusName { get; set; }
+
     }
 }

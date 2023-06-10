@@ -12,7 +12,7 @@ using TimeManager.Core.Context;
 namespace TimeManager.Core.Migrations
 {
     [DbContext(typeof(TimeManagerContext))]
-    [Migration("20230607201228_Init")]
+    [Migration("20230610162947_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -40,6 +40,9 @@ namespace TimeManager.Core.Migrations
                     b.Property<DateTime>("LastExecuted")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("TaskCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TaskName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,32 +52,11 @@ namespace TimeManager.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TaskCategoryId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("RegularTasks");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.Report", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ReportDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TaskId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("TaskTime")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.TaskCategory", b =>
@@ -90,6 +72,33 @@ namespace TimeManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("14423472-f48b-4bd5-9cd8-a00f7c219670"),
+                            CategoryName = "Спорт"
+                        },
+                        new
+                        {
+                            Id = new Guid("b60726d8-a454-497e-8a8a-6c7de9349561"),
+                            CategoryName = "Навчання"
+                        },
+                        new
+                        {
+                            Id = new Guid("d095463e-4bfa-40e1-9fc9-764131f4fda8"),
+                            CategoryName = "Робота"
+                        },
+                        new
+                        {
+                            Id = new Guid("fe0124c0-e548-494d-b0eb-818b524e7dbb"),
+                            CategoryName = "Домашні обов'язки"
+                        },
+                        new
+                        {
+                            Id = new Guid("3813afe6-e14b-4f0d-992a-f618af1fcf29"),
+                            CategoryName = "Дозвілля"
+                        });
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.Tasks", b =>
@@ -100,9 +109,6 @@ namespace TimeManager.Core.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ReportId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -121,8 +127,6 @@ namespace TimeManager.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
 
                     b.HasIndex("TaskCategoryId");
 
@@ -146,6 +150,23 @@ namespace TimeManager.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TaskStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("783bb47d-233a-4f7d-b92e-447ba12a24b5"),
+                            StasusName = "Не розпочато"
+                        },
+                        new
+                        {
+                            Id = new Guid("41c8dd14-0102-4cd8-963a-769751f719d6"),
+                            StasusName = "В процесі"
+                        },
+                        new
+                        {
+                            Id = new Guid("f8dcdd74-581b-4362-a7c4-957bc718052d"),
+                            StasusName = "Виконано"
+                        });
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.Users", b =>
@@ -162,37 +183,36 @@ namespace TimeManager.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ReportId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReportId");
-
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.RegularTask", b =>
                 {
+                    b.HasOne("TimeManager.Core.Entity.TaskCategory", "TaskCategory")
+                        .WithMany()
+                        .HasForeignKey("TaskCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TimeManager.Core.Entity.Users", "User")
-                        .WithMany("RegularTasks")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TaskCategory");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("TimeManager.Core.Entity.Tasks", b =>
                 {
-                    b.HasOne("TimeManager.Core.Entity.Report", null)
-                        .WithMany("Task")
-                        .HasForeignKey("ReportId");
-
                     b.HasOne("TimeManager.Core.Entity.TaskCategory", "TaskCategory")
                         .WithMany()
                         .HasForeignKey("TaskCategoryId")
@@ -220,22 +240,6 @@ namespace TimeManager.Core.Migrations
 
             modelBuilder.Entity("TimeManager.Core.Entity.Users", b =>
                 {
-                    b.HasOne("TimeManager.Core.Entity.Report", null)
-                        .WithMany("User")
-                        .HasForeignKey("ReportId");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.Report", b =>
-                {
-                    b.Navigation("Task");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TimeManager.Core.Entity.Users", b =>
-                {
-                    b.Navigation("RegularTasks");
-
                     b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618

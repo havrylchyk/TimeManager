@@ -16,7 +16,6 @@ namespace TimeManager.Repositories
         void Update(TEntity entity);
         void Delete(TEntity entity);
         void Save();
-        Guid GetIdByName(string name);
     }
 }
 
