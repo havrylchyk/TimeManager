@@ -237,7 +237,6 @@ namespace TimeManager.UI
             EmailChangetextBox.Text = currentUser.Email;
         }
 
-
         private void Addregularbutton_Click(object sender, EventArgs e)
         {
             string taskName = RegularnametextBox.Text;
