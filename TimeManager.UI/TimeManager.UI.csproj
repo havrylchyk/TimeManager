@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Syncfusion.Diagram.Base" Version="21.2.9" />
+    <PackageReference Include="Syncfusion.Diagram.Windows" Version="21.2.9" />
+    <PackageReference Include="WinForms.DataVisualization" Version="1.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TimeManager.Core\TimeManager.Core.csproj" />
     <ProjectReference Include="..\TimeManager.Repositories\TimeManager.Repositories.csproj" />
   </ItemGroup>

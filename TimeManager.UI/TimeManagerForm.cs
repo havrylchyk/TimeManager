@@ -1,6 +1,7 @@
 ﻿using TimeManager.Core.Context;
 using TimeManager.Core.Entity;
 using TimeManager.Repositories;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TimeManager.UI
 {
@@ -42,6 +43,8 @@ namespace TimeManager.UI
                 "Регулярні завдання",
             };
             CheckdrvcomboBox.Items.AddRange(customData.ToArray());
+
+            CheckdrvcomboBox.SelectedItem = "Завдання";
         }
 
         private void TimeManagerForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -49,41 +52,9 @@ namespace TimeManager.UI
             LoginForm.Instance.Close();
         }
 
-        private void CategorycomboBoxFill()
-        {
-            List<KeyValuePair<Guid, string>> addItems = new List<KeyValuePair<Guid, string>>();
-
-            foreach (var category in taskCategoryRepository.GetAll())
-            {
-                addItems.Add(new KeyValuePair<Guid, string>(category.Id, category.CategoryName));
-            }
-
-            CategorycomboBox.DataSource = addItems;
-            CategorycomboBox.DisplayMember = "Value";
-            CategorycomboBox.ValueMember = "Key";
-
-            CategorycomboBoxtwo.DataSource = addItems;
-            CategorycomboBoxtwo.DisplayMember = "Value";
-            CategorycomboBoxtwo.ValueMember = "Key";
-        }
-
-        private void StatuscomboBoxFill()
-        {
-            List<KeyValuePair<Guid, string>> addItems = new List<KeyValuePair<Guid, string>>();
-
-            foreach (var status in tasksStatusRepository.GetAll())
-            {
-                addItems.Add(new KeyValuePair<Guid, string>(status.Id, status.StasusName));
-            }
-
-            StatuscomboBox.DataSource = addItems;
-            StatuscomboBox.DisplayMember = "Value";
-            StatuscomboBox.ValueMember = "Key";
-
-        }
-
         private void CheckdrvcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (CheckdrvcomboBox.SelectedItem == "Завдання")
             {
                 LoadTasks();
@@ -94,36 +65,6 @@ namespace TimeManager.UI
             }
         }
 
-        private void LoadTasks()
-        {
-            TaskdataGridView.ClearSelection();
-            var userTasks = tasksRepository.GetAll()
-                .Where(task => task.UserId == currentUser.Id)
-                    .Select(x => new
-                    {
-                        x.Id,
-                        TaskName = x.TaskName,
-                        StartTime = x.StartTime,
-                        EndTime = x.EndTime,
-                        User = x.User.Username,
-                        TaskCategory = x.TaskCategory != null ? x.TaskCategory.CategoryName : string.Empty,
-                        TaskStatus = x.TaskStatus != null ? x.TaskStatus.StasusName : string.Empty
-                    })
-                 .ToList();
-
-            TaskdataGridView.DataSource = userTasks;
-            TaskdataGridView.Columns["Id"].Visible = false;
-
-            TaskdataGridView.Columns["TaskName"].HeaderText = "Назва завдання";
-            TaskdataGridView.Columns["StartTime"].HeaderText = "Початок";
-            TaskdataGridView.Columns["EndTime"].HeaderText = "Кінець";
-            TaskdataGridView.Columns["User"].HeaderText = "Користувач";
-            TaskdataGridView.Columns["TaskCategory"].HeaderText = "Категорія";
-            TaskdataGridView.Columns["TaskStatus"].HeaderText = "Статус";
-
-            TaskdataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
         private void Addbutton_Click(object sender, EventArgs e)
         {
             string taskeName = taskNametextBox.Text;
@@ -131,15 +72,16 @@ namespace TimeManager.UI
             DateTime endTime = EnddateTimePicker.Value;
 
             Tasks task = new();
-
-            task.TaskName = taskeName;
-            task.StartTime = startTime;
-            task.EndTime = endTime;
-            task.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBox.SelectedValue);
-            task.TaskStatus = tasksStatusRepository.Get((Guid)StatuscomboBox.SelectedValue);
-            task.User = usersRepository.Get(currentUser.Id);
-
-            tasksRepository.Create(task);
+            if (ValidateDateTimePicker() == true)
+            {
+                task.TaskName = taskeName;
+                task.StartTime = startTime;
+                task.EndTime = endTime;
+                task.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBox.SelectedValue);
+                task.TaskStatus = tasksStatusRepository.Get((Guid)StatuscomboBox.SelectedValue);
+                task.User = usersRepository.Get(currentUser.Id);
+                tasksRepository.Create(task);
+            }
             LoadTasks();
         }
 
@@ -190,53 +132,6 @@ namespace TimeManager.UI
 
         }
 
-        private void LoadRegularTasks()
-        {
-            TaskdataGridView.ClearSelection();
-            var userRegularTasks = regularTaskRepository.GetAll()
-                .Where(task => task.UserId == currentUser.Id)
-                    .Select(x => new
-                    {
-                        x.Id,
-                        TaskName = x.TaskName,
-                        Frequency = x.Frequency,
-                        LastExecuted = x.LastExecuted,
-                        User = x.User.Username,
-                        TaskCategory = x.TaskCategory != null ? x.TaskCategory.CategoryName : string.Empty,
-
-                    })
-                 .ToList();
-
-            TaskdataGridView.DataSource = userRegularTasks;
-
-            TaskdataGridView.Columns["Id"].Visible = false;
-            TaskdataGridView.Columns["TaskName"].HeaderText = "Назва завдання";
-            TaskdataGridView.Columns["Frequency"].HeaderText = "Частота";
-            TaskdataGridView.Columns["LastExecuted"].HeaderText = "Останнє виконання";
-            TaskdataGridView.Columns["User"].HeaderText = "Користувач";
-            TaskdataGridView.Columns["TaskCategory"].HeaderText = "Категорія";
-
-            TaskdataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        private void Updatenamebutton_Click(object sender, EventArgs e)
-        {
-            currentUser.Username = UsertextBox.Text;
-            currentUser.Email = EmailChangetextBox.Text;
-
-            UpdateUserFields();
-            LoadTasks();
-            LoadRegularTasks();
-
-            ctx.SaveChanges(); 
-        }
-
-        private void UpdateUserFields()
-        {
-            UsertextBox.Text = currentUser.Username;
-            EmailChangetextBox.Text = currentUser.Email;
-        }
-
         private void Addregularbutton_Click(object sender, EventArgs e)
         {
             string taskName = RegularnametextBox.Text;
@@ -244,14 +139,21 @@ namespace TimeManager.UI
             DateTime lastExecuted = lastdateTimePicker.Value;
 
             RegularTask regularTask = new RegularTask();
+            if (frequency > 0 && frequency < 8)
+            {
+                regularTask.TaskName = taskName;
+                regularTask.Frequency = frequency;
+                regularTask.LastExecuted = lastExecuted;
+                regularTask.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBoxtwo.SelectedValue);
+                regularTask.User = usersRepository.Get(currentUser.Id);
 
-            regularTask.TaskName = taskName;
-            regularTask.Frequency = frequency;
-            regularTask.LastExecuted = lastExecuted;
-            regularTask.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBoxtwo.SelectedValue);
-            regularTask.User = usersRepository.Get(currentUser.Id);
+                regularTaskRepository.Create(regularTask);
+            }
+            else
+            {
+                MessageBox.Show("Регулярене завдання не може виконуватись більше раз ніж є днів тижня.");
+            }
 
-            regularTaskRepository.Create(regularTask);
             LoadRegularTasks();
         }
 
@@ -285,13 +187,19 @@ namespace TimeManager.UI
 
                 if (regularTaskToUpdate != null)
                 {
-                    // Оновити значення полів об'єкта regularTaskToUpdate
-                    regularTaskToUpdate.TaskName = RegularnametextBox.Text;
-                    regularTaskToUpdate.Frequency = Convert.ToInt32(RegularTasknumericUpDown.Value);
-                    regularTaskToUpdate.LastExecuted = lastdateTimePicker.Value;
-                    regularTaskToUpdate.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBoxtwo.SelectedValue);
+                    if (RegularTasknumericUpDown.Value > 0 && RegularTasknumericUpDown.Value < 8)
+                    {
+                        regularTaskToUpdate.TaskName = RegularnametextBox.Text;
+                        regularTaskToUpdate.Frequency = Convert.ToInt32(RegularTasknumericUpDown.Value);
+                        regularTaskToUpdate.LastExecuted = lastdateTimePicker.Value;
+                        regularTaskToUpdate.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBoxtwo.SelectedValue);
 
-                    regularTaskRepository.Update(regularTaskToUpdate);
+                        regularTaskRepository.Update(regularTaskToUpdate);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Регулярене завдання не може виконуватись більше раз ніж є днів тижня.");
+                    }
                     LoadRegularTasks();
                 }
                 else
@@ -299,6 +207,27 @@ namespace TimeManager.UI
                     MessageBox.Show("Немає даних для редагування.");
                 }
             }
+        }
+
+        private void Updatenamebutton_Click(object sender, EventArgs e)
+        {
+
+            if (IsValidEmail(EmailChangetextBox.Text))
+            {
+                var user = ctx.Users.Find(currentUser.Id);
+                user.Username = UsertextBox.Text;
+                user.Email = EmailChangetextBox.Text;
+
+                ctx.SaveChanges();
+                LoadTasks();
+                LoadRegularTasks();
+            }
+        }
+
+        private void Reportbutton_Click(object sender, EventArgs e)
+        {
+            Report reportform = new Report(currentUser);
+            reportform.Show();
         }
     }
 }

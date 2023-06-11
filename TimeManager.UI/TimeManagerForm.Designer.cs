@@ -64,6 +64,7 @@
             label10 = new Label();
             label11 = new Label();
             CheckdrvcomboBox = new ComboBox();
+            Reportbutton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             CreateTasks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)TaskdataGridView).BeginInit();
@@ -224,14 +225,15 @@
             // 
             // TaskdataGridView
             // 
-            TaskdataGridView.BackgroundColor = SystemColors.Window;
+            TaskdataGridView.BackgroundColor = Color.FromArgb(255, 192, 192);
+            TaskdataGridView.BorderStyle = BorderStyle.None;
             TaskdataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             TaskdataGridView.GridColor = SystemColors.WindowText;
             TaskdataGridView.Location = new Point(12, 328);
             TaskdataGridView.Name = "TaskdataGridView";
             TaskdataGridView.RowHeadersWidth = 51;
             TaskdataGridView.RowTemplate.Height = 29;
-            TaskdataGridView.Size = new Size(880, 166);
+            TaskdataGridView.Size = new Size(988, 166);
             TaskdataGridView.TabIndex = 3;
             // 
             // UsertextBox
@@ -422,12 +424,24 @@
             CheckdrvcomboBox.TabIndex = 8;
             CheckdrvcomboBox.SelectedIndexChanged += CheckdrvcomboBox_SelectedIndexChanged;
             // 
+            // Reportbutton
+            // 
+            Reportbutton.BackColor = Color.MediumPurple;
+            Reportbutton.Location = new Point(859, 500);
+            Reportbutton.Name = "Reportbutton";
+            Reportbutton.Size = new Size(141, 48);
+            Reportbutton.TabIndex = 9;
+            Reportbutton.Text = "Зробити звіт";
+            Reportbutton.UseVisualStyleBackColor = false;
+            Reportbutton.Click += Reportbutton_Click;
+            // 
             // TimeManagerForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1008, 560);
+            Controls.Add(Reportbutton);
             Controls.Add(CheckdrvcomboBox);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -485,5 +499,6 @@
         private Label label11;
         private NumericUpDown RegularTasknumericUpDown;
         private ComboBox CheckdrvcomboBox;
+        private Button Reportbutton;
     }
 }

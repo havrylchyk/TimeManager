@@ -24,6 +24,7 @@ namespace TimeManager.UI
             usersrepository.Create(users);
             usersrepository.Save();
         }
+
         private void Applaybutton_Click(object sender, EventArgs e)
         {
             string username = UsernametextBox.Text;
@@ -69,6 +70,7 @@ namespace TimeManager.UI
             string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             return Regex.IsMatch(email, emailPattern);
         }
+
         private bool IsStrongPassword(string password)
         {
             bool hasLowercase = false;
@@ -100,8 +102,8 @@ namespace TimeManager.UI
         {
             string username = UsernametextBox.Text;
             string password = PasswordtextBox.Text;
-
-            var user = usersrepository.GetAll().FirstOrDefault(u => u.Username == username && u.Password == password);
+            string email = EmailtextBox.Text;
+            var user = usersrepository.GetAll().FirstOrDefault(u => u.Username == username && u.Password == password && u.Email == email);
 
             if (user == null)
             {
