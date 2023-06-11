@@ -28,66 +28,155 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             UsertextBox = new TextBox();
             label1 = new Label();
-            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
+            label2 = new Label();
+            AmountOfTasktextBox = new TextBox();
+            NoStartedtextBox = new TextBox();
+            label3 = new Label();
+            ProgrestextBox = new TextBox();
+            label4 = new Label();
+            DonetextBox = new TextBox();
+            label = new Label();
+            groupBox1 = new GroupBox();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // UsertextBox
             // 
-            UsertextBox.Location = new Point(12, 44);
+            UsertextBox.BackColor = Color.Snow;
+            UsertextBox.Location = new Point(16, 44);
             UsertextBox.Name = "UsertextBox";
+            UsertextBox.ReadOnly = true;
             UsertextBox.Size = new Size(188, 27);
             UsertextBox.TabIndex = 5;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(14, 18);
+            label1.Location = new Point(16, 21);
             label1.Name = "label1";
             label1.Size = new Size(89, 20);
             label1.TabIndex = 6;
             label1.Text = "Користувач";
             // 
-            // chart1
+            // label2
             // 
-            chartArea1.Name = "ChartArea1";
-            chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            chart1.Legends.Add(legend1);
-            chart1.Location = new Point(12, 93);
-            chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            chart1.Series.Add(series1);
-            chart1.Size = new Size(155, 171);
-            chart1.TabIndex = 7;
-            chart1.Text = "chart1";
+            label2.AutoSize = true;
+            label2.Location = new Point(16, 94);
+            label2.Name = "label2";
+            label2.Size = new Size(195, 20);
+            label2.TabIndex = 7;
+            label2.Text = "Загальна кількість завдань";
+            // 
+            // AmountOfTasktextBox
+            // 
+            AmountOfTasktextBox.BackColor = Color.Snow;
+            AmountOfTasktextBox.Location = new Point(16, 117);
+            AmountOfTasktextBox.Name = "AmountOfTasktextBox";
+            AmountOfTasktextBox.ReadOnly = true;
+            AmountOfTasktextBox.Size = new Size(125, 27);
+            AmountOfTasktextBox.TabIndex = 8;
+            // 
+            // NoStartedtextBox
+            // 
+            NoStartedtextBox.BackColor = Color.Snow;
+            NoStartedtextBox.Location = new Point(16, 315);
+            NoStartedtextBox.Name = "NoStartedtextBox";
+            NoStartedtextBox.ReadOnly = true;
+            NoStartedtextBox.Size = new Size(125, 27);
+            NoStartedtextBox.TabIndex = 10;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(16, 292);
+            label3.Name = "label3";
+            label3.Size = new Size(205, 20);
+            label3.TabIndex = 9;
+            label3.Text = "З них нерозпочаті завдання";
+            // 
+            // ProgrestextBox
+            // 
+            ProgrestextBox.BackColor = Color.Snow;
+            ProgrestextBox.Location = new Point(16, 251);
+            ProgrestextBox.Name = "ProgrestextBox";
+            ProgrestextBox.ReadOnly = true;
+            ProgrestextBox.Size = new Size(125, 27);
+            ProgrestextBox.TabIndex = 12;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(16, 228);
+            label4.Name = "label4";
+            label4.Size = new Size(117, 20);
+            label4.TabIndex = 11;
+            label4.Text = "З них в процесі";
+            // 
+            // DonetextBox
+            // 
+            DonetextBox.BackColor = Color.Snow;
+            DonetextBox.Location = new Point(16, 189);
+            DonetextBox.Name = "DonetextBox";
+            DonetextBox.ReadOnly = true;
+            DonetextBox.Size = new Size(125, 27);
+            DonetextBox.TabIndex = 14;
+            // 
+            // label
+            // 
+            label.AutoSize = true;
+            label.Location = new Point(19, 166);
+            label.Name = "label";
+            label.Size = new Size(186, 20);
+            label.TabIndex = 13;
+            label.Text = "З них виконані  завдання";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(DonetextBox);
+            groupBox1.Controls.Add(UsertextBox);
+            groupBox1.Controls.Add(label);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(ProgrestextBox);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(AmountOfTasktextBox);
+            groupBox1.Controls.Add(NoStartedtextBox);
+            groupBox1.FlatStyle = FlatStyle.Popup;
+            groupBox1.Location = new Point(12, 12);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(276, 361);
+            groupBox1.TabIndex = 15;
+            groupBox1.TabStop = false;
             // 
             // Report
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(731, 684);
-            Controls.Add(chart1);
-            Controls.Add(label1);
-            Controls.Add(UsertextBox);
+            BackColor = Color.Linen;
+            ClientSize = new Size(666, 684);
+            Controls.Add(groupBox1);
             Name = "Report";
             Text = "Report";
             Load += Report_Load;
-            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
         private TextBox UsertextBox;
         private Label label1;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private Label label2;
+        private TextBox AmountOfTasktextBox;
+        private TextBox NoStartedtextBox;
+        private Label label3;
+        private TextBox ProgrestextBox;
+        private Label label4;
+        private TextBox DonetextBox;
+        private Label label;
+        private GroupBox groupBox1;
     }
 }

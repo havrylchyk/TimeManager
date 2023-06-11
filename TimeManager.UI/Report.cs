@@ -23,6 +23,7 @@ namespace TimeManager.UI
             UsertextBox.Text = currentUser.Username;
             LoadChartStatus();
             LoadChartCategory();
+            CalculateTaskStatistics();
         }
 
         private void LoadChartStatus()
@@ -90,6 +91,28 @@ namespace TimeManager.UI
             chart.Series.Add(series);
 
             this.Controls.Add(chart);
+        }
+
+        private void CalculateTaskStatistics()
+        {
+
+            var taskCount = tasksRepository.GetAll()
+                .Count(task => task.UserId == currentUser.Id);
+
+            var completedTaskCount = tasksRepository.GetAll()
+                .Count(task => task.UserId == currentUser.Id && task.TaskStatus?.StasusName == "Виконано");
+
+            var inProgressTaskCount = tasksRepository.GetAll()
+                .Count(task => task.UserId == currentUser.Id && task.TaskStatus?.StasusName == "В процесі");
+
+            var notStartedTaskCount = tasksRepository.GetAll()
+                .Count(task => task.UserId == currentUser.Id && task.TaskStatus?.StasusName == "Не розпочато");
+
+            // Оновлення текстових полів з отриманими значеннями
+            AmountOfTasktextBox.Text = taskCount.ToString();
+            DonetextBox.Text = completedTaskCount.ToString();
+            ProgrestextBox.Text = inProgressTaskCount.ToString();
+            NoStartedtextBox.Text = notStartedTaskCount.ToString();
         }
     }
 }
