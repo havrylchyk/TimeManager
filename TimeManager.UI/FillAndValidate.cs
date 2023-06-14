@@ -70,6 +70,7 @@ namespace TimeManager.UI
             TaskdataGridView.Columns["TaskStatus"].HeaderText = "Статус";
 
             TaskdataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            CheckTaskRemindersForm();
         }
 
         private void LoadRegularTasks()
@@ -99,6 +100,7 @@ namespace TimeManager.UI
             TaskdataGridView.Columns["TaskCategory"].HeaderText = "Категорія";
 
             TaskdataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            CheckTaskRemindersForm();
         }
 
         private bool ValidateDateTimePicker()
@@ -114,6 +116,7 @@ namespace TimeManager.UI
 
             return true;
         }
+        
         private bool IsValidEmail(string email)
         {
             string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";

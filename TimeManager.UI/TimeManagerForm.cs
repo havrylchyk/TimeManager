@@ -1,12 +1,15 @@
-﻿using TimeManager.Core.Context;
+﻿using System.Net.Mail;
+using System.Net;
+using TimeManager.Core.Context;
 using TimeManager.Core.Entity;
 using TimeManager.Repositories;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TimeManager.UI
 {
     public partial class TimeManagerForm : Form
     {
+
+        //mobilochkaj5439@gmail.com
         private Users currentUser;
 
         public TimeManagerContext ctx;
@@ -29,6 +32,8 @@ namespace TimeManager.UI
             InitializeComponent();
             CategorycomboBoxFill();
             StatuscomboBoxFill();
+            CheckTaskRemindersForm();
+            CheckTaskReminders();
 
         }
 
@@ -72,6 +77,11 @@ namespace TimeManager.UI
             DateTime endTime = EnddateTimePicker.Value;
 
             Tasks task = new();
+            if (taskeName == "" || taskeName == null)
+            {
+                MessageBox.Show("Поле не може бути пустим.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (ValidateDateTimePicker() == true)
             {
                 task.TaskName = taskeName;
@@ -83,6 +93,7 @@ namespace TimeManager.UI
                 tasksRepository.Create(task);
             }
             LoadTasks();
+            //CheckTaskRemindersForm();
         }
 
         private void Deletebutton_Click(object sender, EventArgs e)
@@ -99,6 +110,7 @@ namespace TimeManager.UI
                     LoadTasks();
                 }
             }
+            CheckTaskRemindersForm();
         }
 
         private void Updatebutton_Click(object sender, EventArgs e)
@@ -112,7 +124,11 @@ namespace TimeManager.UI
                 Guid taskId = Guid.Parse(taskIdString);
 
                 Tasks taskToUpdate = tasksRepository.Get(taskId);
-
+                if (taskNametextBox.Text == "" || taskNametextBox.Text == null)
+                {
+                    MessageBox.Show("Поле не може бути пустим.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 if (taskToUpdate != null)
                 {
                     taskToUpdate.TaskName = taskNametextBox.Text;
@@ -129,6 +145,7 @@ namespace TimeManager.UI
                     MessageBox.Show("Немає даних для редагування.");
                 }
             }
+            CheckTaskRemindersForm();
 
         }
 
@@ -139,6 +156,11 @@ namespace TimeManager.UI
             DateTime lastExecuted = lastdateTimePicker.Value;
 
             RegularTask regularTask = new RegularTask();
+            if (taskName == "" || taskName == null)
+            {
+                MessageBox.Show("Поле не може бути пустим.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (frequency > 0 && frequency < 8)
             {
                 regularTask.TaskName = taskName;
@@ -155,6 +177,7 @@ namespace TimeManager.UI
             }
 
             LoadRegularTasks();
+            CheckTaskRemindersForm();
         }
 
         private void DeleteRegularbutton_Click(object sender, EventArgs e)
@@ -171,63 +194,8 @@ namespace TimeManager.UI
                     LoadTasks();
                 }
             }
+            CheckTaskRemindersForm();
         }
 
-        private void Updateregularbutton_Click(object sender, EventArgs e)
-        {
-            if (TaskdataGridView.SelectedCells.Count > 0)
-            {
-                int selectedRowIndex = TaskdataGridView.SelectedCells[0].RowIndex;
-                DataGridViewRow selectedRow = TaskdataGridView.Rows[selectedRowIndex];
-
-                string regularTaskIdString = selectedRow.Cells["Id"].Value.ToString();
-                Guid regularTaskId = Guid.Parse(regularTaskIdString);
-
-                RegularTask regularTaskToUpdate = regularTaskRepository.Get(regularTaskId);
-
-                if (regularTaskToUpdate != null)
-                {
-                    if (RegularTasknumericUpDown.Value > 0 && RegularTasknumericUpDown.Value < 8)
-                    {
-                        regularTaskToUpdate.TaskName = RegularnametextBox.Text;
-                        regularTaskToUpdate.Frequency = Convert.ToInt32(RegularTasknumericUpDown.Value);
-                        regularTaskToUpdate.LastExecuted = lastdateTimePicker.Value;
-                        regularTaskToUpdate.TaskCategory = taskCategoryRepository.Get((Guid)CategorycomboBoxtwo.SelectedValue);
-
-                        regularTaskRepository.Update(regularTaskToUpdate);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Регулярене завдання не може виконуватись більше раз ніж є днів тижня.");
-                    }
-                    LoadRegularTasks();
-                }
-                else
-                {
-                    MessageBox.Show("Немає даних для редагування.");
-                }
-            }
-        }
-
-        private void Updatenamebutton_Click(object sender, EventArgs e)
-        {
-
-            if (IsValidEmail(EmailChangetextBox.Text))
-            {
-                var user = ctx.Users.Find(currentUser.Id);
-                user.Username = UsertextBox.Text;
-                user.Email = EmailChangetextBox.Text;
-
-                ctx.SaveChanges();
-                LoadTasks();
-                LoadRegularTasks();
-            }
-        }
-
-        private void Reportbutton_Click(object sender, EventArgs e)
-        {
-            Report reportform = new Report(currentUser);
-            reportform.Show();
-        }
     }
 }

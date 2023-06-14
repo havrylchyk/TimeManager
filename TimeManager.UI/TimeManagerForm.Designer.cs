@@ -65,6 +65,7 @@
             label11 = new Label();
             CheckdrvcomboBox = new ComboBox();
             Reportbutton = new Button();
+            Reminderbutton = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             CreateTasks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)TaskdataGridView).BeginInit();
@@ -435,12 +436,24 @@
             Reportbutton.UseVisualStyleBackColor = false;
             Reportbutton.Click += Reportbutton_Click;
             // 
+            // Reminderbutton
+            // 
+            Reminderbutton.BackColor = Color.MediumPurple;
+            Reminderbutton.Location = new Point(685, 500);
+            Reminderbutton.Name = "Reminderbutton";
+            Reminderbutton.Size = new Size(168, 48);
+            Reminderbutton.TabIndex = 10;
+            Reminderbutton.Text = "Перевірити нагадування";
+            Reminderbutton.UseVisualStyleBackColor = false;
+            Reminderbutton.Click += Reminderbutton_Click;
+            // 
             // TimeManagerForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1008, 560);
+            Controls.Add(Reminderbutton);
             Controls.Add(Reportbutton);
             Controls.Add(CheckdrvcomboBox);
             Controls.Add(groupBox2);
@@ -500,5 +513,6 @@
         private NumericUpDown RegularTasknumericUpDown;
         private ComboBox CheckdrvcomboBox;
         private Button Reportbutton;
+        private Button Reminderbutton;
     }
 }

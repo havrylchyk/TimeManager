@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Tokens;
 using System.Text.RegularExpressions;
 using TimeManager.Core.Context;
 using TimeManager.Core.Entity;
@@ -40,6 +41,12 @@ namespace TimeManager.UI
             if (!IsStrongPassword(password))
             {
                 MessageBox.Show("Пароль повинен містити букви різних регістрів та цифри.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (username == "" || username == null)
+            {
+                MessageBox.Show("Поле з ім'ям не має бути пустим.", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -122,6 +129,11 @@ namespace TimeManager.UI
         private void PasswordtextBox_TextChanged(object sender, EventArgs e)
         {
             PasswordtextBox.UseSystemPasswordChar = true;
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

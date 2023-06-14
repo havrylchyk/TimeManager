@@ -108,7 +108,6 @@ namespace TimeManager.UI
             var notStartedTaskCount = tasksRepository.GetAll()
                 .Count(task => task.UserId == currentUser.Id && task.TaskStatus?.StasusName == "Не розпочато");
 
-            // Оновлення текстових полів з отриманими значеннями
             AmountOfTasktextBox.Text = taskCount.ToString();
             DonetextBox.Text = completedTaskCount.ToString();
             ProgrestextBox.Text = inProgressTaskCount.ToString();
