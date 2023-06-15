@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TimeManager.UI
 {
@@ -121,6 +122,49 @@ namespace TimeManager.UI
         {
             string emailPattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             return Regex.IsMatch(email, emailPattern);
+        }
+
+        private void UpdateFieldsFromSelectedRow(DataGridViewRow selectedRow)
+        {
+            
+            string taskIdString = selectedRow.Cells["Id"].Value.ToString();
+            Guid taskId = Guid.Parse(taskIdString);
+            string taskName = selectedRow.Cells["TaskName"].Value.ToString();
+            DateTime startTime = Convert.ToDateTime(selectedRow.Cells["StartTime"].Value);
+            DateTime endTime = Convert.ToDateTime(selectedRow.Cells["EndTime"].Value);
+
+            taskNametextBox.Text = taskName;
+            StartdateTimePicker.Value = startTime;
+            EnddateTimePicker.Value = endTime;
+        }
+
+        private void UpdateFieldsFromSelectedRegularTask(DataGridViewRow selectedRow)
+        {
+            string taskIdString = selectedRow.Cells["Id"].Value.ToString();
+            string taskName = selectedRow.Cells["TaskName"].Value.ToString();
+            int frequency = Convert.ToInt32(selectedRow.Cells["Frequency"].Value);
+            DateTime lastExecuted = Convert.ToDateTime(selectedRow.Cells["LastExecuted"].Value);
+
+            RegularnametextBox.Text = taskName;
+            RegularTasknumericUpDown.Value = frequency;
+            lastdateTimePicker.Value = lastExecuted;
+        }
+
+        private void TaskdataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = TaskdataGridView.Rows[e.RowIndex];
+             
+                if (CheckdrvcomboBox.SelectedItem == "Завдання")
+                {
+                    UpdateFieldsFromSelectedRow(selectedRow);
+                }
+                else if (CheckdrvcomboBox.SelectedItem == "Регулярні завдання")
+                {
+                    UpdateFieldsFromSelectedRegularTask(selectedRow);
+                }
+            }
         }
     }
 }

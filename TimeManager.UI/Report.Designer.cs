@@ -39,6 +39,8 @@
             DonetextBox = new TextBox();
             label = new Label();
             groupBox1 = new GroupBox();
+            WastedTimetextBox = new TextBox();
+            label5 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -134,6 +136,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(WastedTimetextBox);
+            groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(DonetextBox);
             groupBox1.Controls.Add(UsertextBox);
@@ -147,9 +151,27 @@
             groupBox1.FlatStyle = FlatStyle.Popup;
             groupBox1.Location = new Point(12, 12);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(276, 361);
+            groupBox1.Size = new Size(276, 548);
             groupBox1.TabIndex = 15;
             groupBox1.TabStop = false;
+            // 
+            // WastedTimetextBox
+            // 
+            WastedTimetextBox.BackColor = SystemColors.Window;
+            WastedTimetextBox.Location = new Point(16, 400);
+            WastedTimetextBox.Name = "WastedTimetextBox";
+            WastedTimetextBox.ReadOnly = true;
+            WastedTimetextBox.Size = new Size(125, 27);
+            WastedTimetextBox.TabIndex = 16;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(16, 377);
+            label5.Name = "label5";
+            label5.Size = new Size(224, 20);
+            label5.TabIndex = 15;
+            label5.Text = "Часу витраченого на завдання";
             // 
             // Report
             // 
@@ -178,5 +200,7 @@
         private TextBox DonetextBox;
         private Label label;
         private GroupBox groupBox1;
+        private TextBox WastedTimetextBox;
+        private Label label5;
     }
 }

@@ -93,7 +93,6 @@ namespace TimeManager.UI
                 tasksRepository.Create(task);
             }
             LoadTasks();
-            //CheckTaskRemindersForm();
         }
 
         private void Deletebutton_Click(object sender, EventArgs e)
@@ -110,7 +109,6 @@ namespace TimeManager.UI
                     LoadTasks();
                 }
             }
-            CheckTaskRemindersForm();
         }
 
         private void Updatebutton_Click(object sender, EventArgs e)
@@ -145,8 +143,6 @@ namespace TimeManager.UI
                     MessageBox.Show("Немає даних для редагування.");
                 }
             }
-            CheckTaskRemindersForm();
-
         }
 
         private void Addregularbutton_Click(object sender, EventArgs e)
@@ -177,7 +173,6 @@ namespace TimeManager.UI
             }
 
             LoadRegularTasks();
-            CheckTaskRemindersForm();
         }
 
         private void DeleteRegularbutton_Click(object sender, EventArgs e)

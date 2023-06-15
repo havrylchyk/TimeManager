@@ -236,6 +236,7 @@
             TaskdataGridView.RowTemplate.Height = 29;
             TaskdataGridView.Size = new Size(988, 166);
             TaskdataGridView.TabIndex = 3;
+            TaskdataGridView.CellClick += this.TaskdataGridView_CellClick;
             // 
             // UsertextBox
             // 

@@ -23,6 +23,7 @@ namespace TimeManager.UI
             UsertextBox.Text = currentUser.Username;
             LoadChartStatus();
             LoadChartCategory();
+            CalculateTimeSpentOnTasks();
             CalculateTaskStatistics();
         }
 
@@ -112,6 +113,26 @@ namespace TimeManager.UI
             DonetextBox.Text = completedTaskCount.ToString();
             ProgrestextBox.Text = inProgressTaskCount.ToString();
             NoStartedtextBox.Text = notStartedTaskCount.ToString();
+        }
+
+        private void CalculateTimeSpentOnTasks()
+        {
+            TimeSpan totalTime = TimeSpan.Zero;
+
+            var completedTasks = tasksRepository.GetAll()
+                .Where(task => task.UserId == currentUser.Id && task.TaskStatus?.StasusName == "Виконано");
+
+            foreach (var task in completedTasks)
+            {
+                TimeSpan taskDuration = task.EndTime - task.StartTime;
+                totalTime += taskDuration;
+            }
+
+            int hours = (int)totalTime.TotalHours;
+            int minutes = totalTime.Minutes;
+
+            string timeSpent = $"{hours} год. {minutes} хв.";
+            WastedTimetextBox.Text = timeSpent;
         }
     }
 }
